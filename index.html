@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Splitr | Split a group project into tasks, owners and deadlines</title>
+<meta name="description" content="Paste your assignment, add your team, get a fair task split with deadlines and a message you can copy to the group chat. Arabic and English. No signup.">
+<meta property="og:title" content="Splitr">
+<meta property="og:description" content="Paste the assignment, get tasks split fairly among members with deadlines. Copy to WhatsApp.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="og.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%23ffd23f' stroke='%23111' stroke-width='6'/%3E%3Cpath d='M30 25v50M70 25v50M30 50h40' stroke='%23111' stroke-width='9' stroke-linecap='round'/%3E%3C/svg%3E">
+<style>
+:root{--ink:#111;--pink:#ff8fb8;--mint:#7be0b8;--sun:#ffd23f;--sky:#8ec9ff;--bg:#fff3e6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);background-image:radial-gradient(#11111122 1.4px,transparent 1.6px);background-size:22px 22px;color:var(--ink);font:16px/1.5 "Trebuchet MS","Segoe UI",Tahoma,system-ui,sans-serif}
+.wrap{max-width:1020px;margin:0 auto;padding:24px 18px 60px}
+.logo{display:inline-block;background:var(--sun);border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);padding:4px 14px;font-weight:900;font-size:26px;transform:rotate(-2deg)}
+h1{font-size:clamp(32px,6vw,56px);line-height:1.05;margin:26px 0 8px;font-weight:900}
+h1 mark{background:var(--pink);padding:0 8px;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.lead{max-width:600px;margin:0 0 22px;font-size:18px}
+.grid{display:grid;grid-template-columns:1.2fr 1fr;gap:20px;align-items:start}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.box{background:#fff;border:3px solid var(--ink);box-shadow:7px 7px 0 var(--ink);padding:18px;border-radius:6px}
+.box.b2{background:var(--sky)}
+label{display:block;font-weight:900;margin:12px 0 5px;font-size:14px;text-transform:uppercase;letter-spacing:.5px}
+label:first-child{margin-top:0}
+textarea,input{width:100%;border:3px solid var(--ink);padding:10px 12px;font:inherit;background:#fff;border-radius:4px}
+textarea{min-height:170px;resize:vertical}
+textarea:focus,input:focus{outline:none;box-shadow:4px 4px 0 var(--pink)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+button{font:inherit;font-weight:900;border:3px solid var(--ink);background:var(--mint);padding:10px 18px;cursor:pointer;box-shadow:4px 4px 0 var(--ink);border-radius:4px}
+button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--ink)}
+button.alt{background:#fff}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.hint{font-size:13px;color:#444;margin-top:6px}
+#out{margin-top:28px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:14px}
+.card{border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);padding:14px;background:var(--c);border-radius:6px}
+.card h3{margin:0 0 4px;font-size:22px;display:flex;justify-content:space-between;gap:8px}
+.card h3 span{font-size:13px;background:#fff;border:2px solid var(--ink);padding:1px 8px;border-radius:99px;align-self:center}
+.task{background:#fff;border:2px solid var(--ink);border-radius:4px;padding:8px 10px;margin-top:8px}
+.task b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+.sum{display:flex;gap:10px;flex-wrap:wrap;margin:6px 0 4px}
+.sum div{background:var(--sun);border:3px solid var(--ink);padding:4px 12px;font-weight:900;box-shadow:3px 3px 0 var(--ink)}
+.bar{height:12px;border:2px solid var(--ink);background:#fff;margin-top:8px;border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--ink)}
+.err{background:#ffe0e0;border:3px solid var(--ink);padding:8px 12px;margin-top:12px;font-weight:700}
+footer{margin-top:40px;font-size:13px}
+a{color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<span class="logo">Splitr</span>
+<h1>Split the project. <mark>Skip the fights.</mark></h1>
+<p class="lead">Paste the assignment, add your teammates, pick the deadline. Splitr hands out the tasks fairly and gives each person their own dates.</p>
+<div class="grid">
+<div class="box">
+<label for="asg">Assignment or task list</label>
+<textarea id="asg" dir="auto" placeholder="One task per line, or paste the full assignment text. Bullets and numbers are fine.&#10;مثال: كتابة مقدمة التقرير&#10;Build the ER diagram"></textarea>
+<div class="hint">Each line becomes a task. If you paste a paragraph, each sentence becomes one.</div>
+<div class="row">
+<div><label for="mem">Members (comma or new line)</label><textarea id="mem" dir="auto" style="min-height:70px" placeholder="Mostafa, Adham, Sara"></textarea></div>
+<div><label for="due">Final deadline</label><input id="due" type="date"><label for="start">Start date</label><input id="start" type="date"></div>
+</div>
+<div class="btns"><button id="go">Split it</button><button class="alt" id="demo">Try an example</button></div>
+<div id="err"></div>
+</div>
+<div class="box b2">
+<b style="font-size:20px">How the split works</b>
+<ol style="padding-inline-start:20px;margin:10px 0 0">
+<li>Longer tasks count as heavier, so the load stays even.</li>
+<li>Each task goes to the person with the lightest load so far.</li>
+<li>Deadlines are spread between start and final date. The last day is kept for merging and review.</li>
+<li>Copy the result and drop it in the group chat.</li>
+</ol>
+<p class="hint">Everything runs in your browser. Nothing is uploaded or saved.</p>
+</div>
+</div>
+<div id="out"></div>
+<footer>Open source, MIT. <a href="https://github.com/mostaaafaomran-ctrl/splitr">github.com/mostaaafaomran-ctrl/splitr</a></footer>
+</div>
+<script src="splitr.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const iso=d=>d.toISOString().slice(0,10);
+const today=new Date();today.setHours(12,0,0,0);
+$('start').value=iso(today);const dd=new Date(today);dd.setDate(dd.getDate()+14);$('due').value=iso(dd);
+const colors=['#ff8fb8','#7be0b8','#ffd23f','#8ec9ff','#d4b5ff','#ffb37a','#b5f26b','#ffa9a3'];
+let last=null;
+function esc(s){return s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+function fmt(d){return d.toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'})}
+function run(){
+  $('err').innerHTML='';
+  const tasks=Splitr.parseTasks($('asg').value);
+  const members=Splitr.parseMembers($('mem').value);
+  const start=new Date($('start').value+'T12:00:00'),due=new Date($('due').value+'T12:00:00');
+  let e='';
+  if(!tasks.length)e='Add at least one task.';
+  else if(!members.length)e='Add at least one member.';
+  else if(isNaN(due)||isNaN(start))e='Pick the start and final dates.';
+  else if(due<start)e='The final deadline is before the start date.';
+  if(e){$('err').innerHTML='<div class="err">'+e+'</div>';return}
+  last=Splitr.plan(tasks,members,start,due);
+  render();
+}
+function render(){
+  const p=last,tot=p.assignments.reduce((a,t)=>a+t.w,0);
+  let h='<div class="sum"><div>'+p.assignments.length+' tasks</div><div>'+p.members.length+' members</div><div>Merge &amp; review: '+fmt(p.reviewDate)+'</div><div>Final: '+fmt(p.due)+'</div></div>';
+  h+='<div class="cards">';
+  p.members.forEach((m,i)=>{
+    const mine=p.assignments.filter(a=>a.owner===m);const load=mine.reduce((a,t)=>a+t.w,0);
+    h+='<div class="card" style="--c:'+colors[i%colors.length]+'"><h3 dir="auto">'+esc(m)+'<span>'+mine.length+' task'+(mine.length==1?'':'s')+'</span></h3><div class="bar"><i style="width:'+Math.round(100*load/tot)+'%"></i></div>';
+    mine.forEach(a=>{h+='<div class="task"><b>Due '+fmt(a.date)+'</b><span dir="auto">'+esc(a.text)+'</span></div>'});
+    if(!mine.length)h+='<div class="task">No task. Give this person the merge and review job.</div>';
+    h+='</div>';
+  });
+  h+='</div><div class="btns"><button id="cp">Copy for the group chat</button><button class="alt" id="pr">Print</button></div><div class="hint" id="cpm"></div>';
+  $('out').innerHTML=h;
+  $('cp').onclick=()=>{const t=Splitr.toText(p,fmt);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$('cpm').textContent='Copied.').catch(()=>{const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove();$('cpm').textContent='Copied.'})};
+  $('pr').onclick=()=>print();
+}
+$('go').onclick=run;
+$('demo').onclick=()=>{
+  $('asg').value='Write the introduction and problem statement\nDesign the database and draw the ER diagram\nBuild the login and signup pages\nImplement the REST API for courses\nقسم الاختبارات واكتب حالات الاختبار\nPrepare the presentation slides\nRecord the demo video';
+  $('mem').value='Mostafa, Adham, Sara';run();
+};
+const q=new URLSearchParams(location.search);if(q.get('demo')==='1')$('demo').click();
+</script>
+</body>
+</html>
